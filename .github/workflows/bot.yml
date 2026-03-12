@@ -2,8 +2,12 @@ name: Email Job Bot
 
 on:
   schedule:
-    - cron: "*/2 * * * *"
+    - cron: "* * * * *"
   workflow_dispatch:
+
+concurrency:
+  group: email-job-bot
+  cancel-in-progress: true
 
 jobs:
   run-bot:
