@@ -2,7 +2,7 @@ import json
 import re
 from datetime import datetime
 
-from app.email_reader import fetch_unread_emails, mark_email_as_read
+from app.email_reader import fetch_unread_emails, mark_email_as_read, has_unread_emails
 from app.job_extractor import extract_job_info
 from app.telegram_sender import send_job_alert, send_summary
 
@@ -21,11 +21,15 @@ def extract_json(text):
     return None
 
 
+
 def run():
 
     now = datetime.now().hour
 
     if now < 6:
+        return
+    
+    if not has_unread_emails():
         return
 
     emails = fetch_unread_emails()
