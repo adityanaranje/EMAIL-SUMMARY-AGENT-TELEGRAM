@@ -16,6 +16,20 @@ def mark_email_as_read(message_id):
         }
     ).execute()
 
+
+def has_unread_emails():
+    service = get_gmail_services()
+
+    results = service.users().messages().list(
+        userId="me",
+        q="is:unread newer_than:3d",
+        maxResults=1
+    ).execute()
+
+    messages = results.get("messages", [])
+
+    return len(messages) > 0
+
 def decode_base64(data):
     return base64.urlsafe_b64decode(data).decode("utf-8", errors="ignore")
 
