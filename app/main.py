@@ -13,10 +13,13 @@ def extract_json(text):
     """
     text = re.sub(r"```json|```", "", text).strip()
 
-    match = re.search(r"\{.*\}", text, re.DOTALL)
+    matches = re.findall(r"\{.*?\}", text, re.DOTALL)
 
-    if match:
-        return json.loads(match.group())
+    for m in matches:
+        try:
+            return json.loads(m)
+        except json.JSONDecodeError:
+            continue
 
     return None
 
@@ -73,3 +76,4 @@ def run():
 
 if __name__ == "__main__":
     run()
+
